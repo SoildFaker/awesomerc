@@ -517,8 +517,8 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "g", function () awful.util.spawn_with_shell("gvim") end),
     -- {{{Fn control
       -- light control
-      awful.key({ }, "XF86MonBrightnessUp", function() awful.util.spawn_with_shell("~/bin/light.sh -aq 50") end),
-      awful.key({ }, "XF86MonBrightnessDown", function() awful.util.spawn_with_shell("~/bin/light.sh -sq 50") end),
+      awful.key({ }, "XF86MonBrightnessUp", function() awful.util.spawn_with_shell("~/.config/awesome/light.sh -aq 50") end),
+      awful.key({ }, "XF86MonBrightnessDown", function() awful.util.spawn_with_shell("~/.config/awesome/light.sh -sq 50") end),
       -- {{ Volume Control }} --
       awful.key({ }, "XF86AudioRaiseVolume", function()
           awful.util.spawn("amixer set Master 9%+", false)
