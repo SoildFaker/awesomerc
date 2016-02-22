@@ -2,7 +2,7 @@ arg=$1
 dx=$2
 if [ $arg = "-aq" ]; then
     if [ ! -w /sys/class/backlight/intel_backlight/brightness ];then 
-        echo "enbin@123" | sudo -S chmod 777 /sys/class/backlight/intel_backlight/brightness 
+        echo "yourpassword" | sudo -S chmod 777 /sys/class/backlight/intel_backlight/brightness 
     fi 
     read bright < '/sys/class/backlight/intel_backlight/brightness' 
      
@@ -13,7 +13,7 @@ if [ $arg = "-aq" ]; then
     fi 
 elif [ $arg = "-sq" ]; then
     if [ ! -w /sys/class/backlight/intel_backlight/brightness ];then 
-        echo "enbin@123" | sudo -S chmod 777 /sys/class/backlight/intel_backlight/brightness 
+        echo "yourpassword" | sudo -S chmod 777 /sys/class/backlight/intel_backlight/brightness 
     fi 
     read bright < '/sys/class/backlight/intel_backlight/brightness' 
      
