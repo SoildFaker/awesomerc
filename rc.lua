@@ -48,7 +48,7 @@ end
 terminal = "urxvt"
 markup = lain.util.markup
 
-configd = "/home/enbin/.config/awesome/"
+configd = "~/.config/awesome/"
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 

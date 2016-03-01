@@ -15,8 +15,8 @@ white = "#ffffff"
 
 theme = {}
 
-theme.wallpaper = "/home/enbin/.config/awesome/themes/default/wallpapers/wallpaper-2552963.jpg"
-themes_dir = "/home/enbin/.config/awesome/themes/"
+theme.wallpaper = "~/.config/awesome/themes/default/wallpapers/wallpaper-2552963.jpg"
+themes_dir = "~/.config/awesome/themes/"
 theme.icon_theme = nil
 theme.font                                  = "sans 8"
 theme.fg_normal                             = "#AAAAAA"
