@@ -14,7 +14,7 @@ white = "#ffffff"
 
 
 theme = {}
-
+-- Wallpaper
 theme.wallpaper = "~/.config/awesome/themes/default/wallpapers/wallpaper-2552963.jpg"
 themes_dir = "~/.config/awesome/themes/"
 theme.icon_theme = nil
@@ -22,12 +22,12 @@ theme.font                                  = "sans 8"
 theme.fg_normal                             = "#AAAAAA"
 theme.fg_focus                              = "#F0DFAF"
 theme.fg_urgent                             = "#CC9393"
-theme.bg_normal                             = "#222222"
-theme.bg_focus                              = "#1E2320"
+theme.bg_normal                             = "#22222200"
+theme.bg_focus                              = "#1E232000"
 theme.bg_urgent                             = "#3F3F3F"
-theme.border_width                          = "0"
-theme.border_normal                         = "#3F3F3F"
-theme.border_focus                          = "#6F6F6F"
+theme.border_width                          = "1"
+theme.border_normal                         = "#226688"
+theme.border_focus                          = "#227799"
 theme.border_marked                         = "#CC9393"
 theme.titlebar_bg_focus                     = "#3F3F3F"
 theme.titlebar_bg_normal                    = "#3F3F3F"
@@ -36,7 +36,7 @@ theme.binclock_fga                          = "#CCCCCC"
 theme.binclock_fgi                          = "#444444"
 -- theme.taglist_bg_focus                      = black 
 theme.taglist_fg_focus                      = dblue
-theme.tasklist_bg_focus                     = "#222222" 
+theme.tasklist_bg_focus                     = "#22222200" 
 theme.tasklist_fg_focus                     = dblue
 theme.textbox_widget_as_label_font_color    = white 
 theme.textbox_widget_margin_top             = 1
@@ -83,9 +83,9 @@ theme.awful_widget_margin_top               = 2
 theme.mouse_finder_color = "#CC9393"
 -- mouse_finder_[timeout|animate_timeout|radius|factor]
 
--- theme.menu_bg_normal    = ""
+theme.menu_bg_normal    = "#222222"
 -- theme.menu_bg_focus     = ""
--- theme.menu_fg_normal    = ""
+--theme.menu_fg_normal    = ""
 -- theme.menu_fg_focus     = ""
 -- theme.menu_border_color = ""
 -- theme.menu_border_width = ""
