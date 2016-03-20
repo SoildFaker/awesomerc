@@ -80,6 +80,10 @@ local layouts =
 }
 -- }}}
 
+-- {{{AutoRun
+    --awful.util.spawn_with_shell("xcompmgr -c")
+-- }}}
+
 -- {{{ Wallpaper
 if beautiful.wallpaper then
     for s = 1, screen.count() do
@@ -91,13 +95,14 @@ end
 -- {{{ Tags
 -- Define a tag table which hold all screen tags.
 tags = {}
+tag_name={"","","","",""}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
-    tags[s] = awful.tag({ 1, 2, 3, 4, 5 }, s, layouts[1])
+    tags[s] = awful.tag(tag_name, s, layouts[1])
 end
 -- }}}
 
--- {{{ Menu
+-- {{{Menu
 -- Create a laucher widget and a main menu
 myawesomemenu = {
    { "manual", terminal .. " -e man awesome" },
@@ -116,111 +121,12 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                                     { "open terminal", terminal }
                                   }
                         })
-
-mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
-                                     menu = mymainmenu })
-
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 -- }}}
 
 -- {{{ Wibox
--- Define custom tasklist updater
-function tasklistupdate(w, buttons, labelfunc, data, objects)
-    w:reset()
-
-    -- Main container
-    local l = wibox.layout.fixed.horizontal()
-    l:fill_space(true)
-
-    -- Text widget for displaying the name of the focused client
-    local activeclient = nil;
-
-    -- The inactive icons container
-    local inactiveclients = wibox.layout.fixed.horizontal()
-
-    -- Loop through all clients
-    for i, o in ipairs(objects) do
-        -- Init widget cache
-        local cache = data[o]
-
-        -- Get client informaion
-        local text, bg, bg_image, icon = labelfunc(o)
-        
-        -- If cache is defined, use cache
-        if cache then
-            icon = cache.icon
-            label = cache.label
-            background = cache.background
-    
-        -- Else start from scratch
-        else
-            -- Inactive icon widgets
-            icon = wibox.widget.imagebox()
-            background = wibox.widget.background()
-            background:set_widget(icon)
-
-            -- Active label widget
-            label = wibox.widget.textbox()
-
-            -- Cache widgets
-            data[o] = {
-                icon = icon,
-                label = label,
-                background = background
-            }
-           
-            -- Make icon clickable
-            icon:buttons(common.create_buttons(buttons, o))
-            
-            -- Use custom drawing method for drawing icons
-            helpers:set_draw_method(icon)
-        end
-
-        -- Use a fallback for clients without icons
-        local iconsrc = o.icon
-
-        if iconsrc == nil or iconsrc == "" then
-            iconsrc = "/usr/share/icons/Faenza/emblems/scalable/emblem-system.svg"
-        end
-
-        -- Update background
-        background:set_bg(bg)
-
-        -- Update icon image
-        icon:set_image(iconsrc)
-
-        -- Always add the background and icon
-        inactiveclients:add(background)
-        
-        -- If client is focused, add text and set as active client
-        if bg == theme.tasklist_bg_focus then
-            local labeltext = text
-
-            -- Append (F) if client is floating
-            if awful.client.floating.get(o) then
-                labeltext = labeltext .. " (F)"
-            end
-
-            label:set_markup("   " .. labeltext .. "   ")
-       
-            activeclient = label
-        end
-    end
-    
-    -- Add the inactive clients as icons first
-    l:add(inactiveclients)
-
-    -- Then add the active client as a text widget
-    if activeclient then
-        l:add(activeclient)
-    end
-    
-    -- Add the main container to the parent widget
-    w:add(l)
-end
 -- Textclock
-clockicon = wibox.widget.imagebox(beautiful.widget_clock)
 mytextclock = lain.widgets.abase({
     timeout  = 60,
     cmd      = "date +'%A %d %B %R'",
@@ -230,7 +136,7 @@ mytextclock = lain.widgets.abase({
 
         for i=1,3 do t_output = t_output .. " " .. o_it(i) end
 
-        widget:set_markup(markup("#7788af", t_output) .. markup("#343639", " > ") .. markup("#de5e1e", o_it(1)) .. " ")
+        widget:set_markup(markup("#a5ef00","   " .. t_output) .. " " .. markup("#bef73e","  " .. o_it(1)) .. markup("#a5ef00","  "))
     end
 })
 
@@ -238,7 +144,6 @@ mytextclock = lain.widgets.abase({
 lain.widgets.calendar:attach(mytextclock, { font_size = 10 })
 
 -- Weather
-weathericon = wibox.widget.imagebox(beautiful.widget_weather)
 myweather = lain.widgets.weather({
     city_id = 1793511, -- placeholder
     settings = function()
@@ -249,44 +154,20 @@ myweather = lain.widgets.weather({
 })
 
 -- / fs
-fsicon = wibox.widget.imagebox(beautiful.widget_fs)
 fswidget = lain.widgets.fs({
     settings  = function()
-        widget:set_markup(markup("#80d9d8", fs_now.used .. "% "))
+        widget:set_markup(markup("#b9f73e", "  " .. fs_now.used .. "% ") .. markup("#67e323",""))
     end
 })
-
---[[ Mail IMAP check
-mailicon = wibox.widget.imagebox()
-mailicon:buttons(awful.util.table.join(awful.button({ }, 1, function () awful.util.spawn(mail) end)))
-mailwidget = lain.widgets.imap({
-    timeout  = 180,
-    server   = "server",
-    mail     = "mail",
-    password = "keyring get mail",
-    settings = function()
-        if mailcount > 0 then
-            mailicon:set_image(beautiful.widget_mail)
-            widget:set_markup(markup("#cccccc", mailcount .. " "))
-        else
-            widget:set_text("")
-            mailicon:set_image(nil)
-        end
-    end
-})
-]]
 
 -- CPU
-cpuicon = wibox.widget.imagebox()
-cpuicon:set_image(beautiful.widget_cpu)
 cpuwidget = lain.widgets.cpu({
     settings = function()
-        widget:set_markup(markup("#e33a6e", cpu_now.usage .. "% "))
+        widget:set_markup(markup("#cdf76f", "  " .. cpu_now.usage .. "% "))
     end
 })
 
 -- Coretemp
-tempicon = wibox.widget.imagebox(beautiful.widget_temp)
 tempwidget = lain.widgets.temp({
     settings = function()
         widget:set_markup(markup("#f1af5f", coretemp_now .. "°C "))
@@ -295,11 +176,7 @@ tempwidget = lain.widgets.temp({
 
 
 -- Net
-netdownicon = wibox.widget.imagebox(beautiful.widget_netdown)
---netdownicon.align = "middle"
 netdowninfo = wibox.widget.textbox()
-netupicon = wibox.widget.imagebox(beautiful.widget_netup)
---netupicon.align = "middle"
 netupinfo = lain.widgets.net({
     settings = function()
         if iface ~= "network off" and
@@ -308,21 +185,19 @@ netupinfo = lain.widgets.net({
             myweather.update()
         end
 
-        widget:set_markup(markup("#e54c62", net_now.sent .. " "))
-        netdowninfo:set_markup(markup("#87af5f", net_now.received .. " "))
+        widget:set_markup(markup("#bef13c", "  " .. net_now.sent .. " "))
+        netdowninfo:set_markup(markup("#67e300", "  " .. net_now.received .. " "))
     end
 })
 
 -- MEM
-memicon = wibox.widget.imagebox(beautiful.widget_mem)
 memwidget = lain.widgets.mem({
     settings = function()
-        widget:set_markup(markup("#e0da37", mem_now.used .. "M "))
+        widget:set_markup(markup("#a9f16c", "  " .. mem_now.used .. "M "))
     end
 })
 
 -- MPD
-mpdicon = wibox.widget.imagebox()
 mpdwidget = lain.widgets.mpd({
     settings = function()
         mpd_notification_preset = {
@@ -340,7 +215,7 @@ mpdwidget = lain.widgets.mpd({
         else
             artist = ""
             title  = ""
-            mpdicon:set_image(nil)
+            --mpdicon:set_image(nil)
         end
         widget:set_markup(markup("#e54c62", artist) .. markup("#b2b2b2", title))
     end
@@ -394,17 +269,12 @@ mytasklist.buttons = awful.util.table.join(
                                               awful.client.focus.byidx(-1)
                                               if client.focus then client.focus:raise() end
                                           end))
+ -- Widgets
+local separator = wibox.widget.textbox()
+separator:set_markup(markup("#fff273","  "))
 
 for s = 1, screen.count() do
-    -- Widgets
-    local separator = wibox.widget.textbox()
-    separator:set_markup(markup("#6c9eab"," |"))
-    --separator:set_image(beautiful.get().spr2px)
-
-    local separatorbig = wibox.widget.textbox()
-    separatorbig:set_markup(markup("#6c9eab","| "))
-    --separatorbig:set_image(beautiful.get().spr5px)
-    -- Create a promptbox for each screen
+       -- Create a promptbox for each screen
     mypromptbox[s] = awful.widget.prompt()
     -- Create an imagebox widget which will contains an icon indicating which layout we're using.
     -- We need one layoutbox per screen.
@@ -424,54 +294,31 @@ for s = 1, screen.count() do
     -- Create the wibox
     mywibox[s] = awful.wibox({ position = "top",height = 16, screen = s })
     
-    -- Create a textclock widget
-    --mytextclock = awful.widget.textclock()
-
     -- Widgets that are aligned to the left
     local left_layout = wibox.layout.fixed.horizontal()
-    --left_layout:add(mylauncher)
     left_layout:add(mytaglist[s])
     left_layout:add(separator)
     left_layout:add(mypromptbox[s])
-    --left_layout:add(separator)
 
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then
 
-        --right_layout:add(netdownicon)
-        --right_layout:add(netdowninfo)
-        --right_layout:add(netupicon)
-        --right_layout:add(netupinfo)
-        right_layout:add(memicon)
+        right_layout:add(netdowninfo)
+        right_layout:add(netupinfo)
         right_layout:add(memwidget)
-        right_layout:add(cpuicon)
         right_layout:add(cpuwidget)
-        right_layout:add(fsicon)
         right_layout:add(fswidget)
-        --right_layout:add(weathericon)
-        --right_layout:add(myweather)
-        right_layout:add(tempicon)
-        right_layout:add(tempwidget)
-        right_layout:add(separator)
-        right_layout:add(myvolume.icon)
         right_layout:add(myvolume.text)
         if mybattery.hasbattery then
-            --right_layout:add(separator)
-            right_layout:add(mybattery.icon)
             right_layout:add(mybattery.text)
         end
         
         if mywifi.haswifi then
-            --right_layout:add(separator)
-            right_layout:add(mywifi.icon)
             right_layout:add(mywifi.text)
         end
 
-        right_layout:add(separator)
-        right_layout:add(clockicon)
         right_layout:add(mytextclock)
-        right_layout:add(separatorbig)
     end
 
     right_layout:add(wibox.widget.systray())
@@ -488,9 +335,9 @@ end
 
 -- {{{ Mouse bindings
 root.buttons(awful.util.table.join(
-    --awful.button({ }, 3, function () mymainmenu:toggle() end),
-    awful.button({ }, 4, awful.tag.viewnext),
-    awful.button({ }, 5, awful.tag.viewprev)
+    --awful.button({ }, 3, function () mymainmenu:toggle() end)
+    --awful.button({ }, 4, awful.tag.viewnext),
+    --awful.button({ }, 5, awful.tag.viewprev)
 ))
 -- }}}
 

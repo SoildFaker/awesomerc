@@ -23,17 +23,6 @@ end
 
 -- {{{ Define subwidgets
 widget.text = wibox.widget.textbox()
-widget.icon = wibox.widget.imagebox()
-
--- Change the draw method so icons can be drawn smaller
-helpers:set_draw_method(widget.icon)
--- }}}
-
--- {{{ Define interactive behaviour
-widget.icon:buttons(awful.util.table.join(
-    awful.button({ }, 1, function () awful.util.spawn("gnome-control-center power") end)
-))
--- }}}
 
 -- {{{ Update method
 function widget:update()
@@ -46,38 +35,36 @@ function widget:update()
 
     if cur and cap then
         local battery = math.floor(cur * 100 / cap)
-        local iconpath = "/usr/share/icons/Faenza/status/scalable/battery"
        
         if(battery < 10) then
-            iconpath = iconpath .. "-caution"
-            widget.text:set_markup(markup("#ff0000",battery .. "%"))
-        
+            widget.text:set_markup(markup("#ff0000","  " .. battery .. "%"))
+            if sta:match("Charging") then
+                widget.text:set_markup(markup("#00ff00", "  " .. "Charging"))
+            end
         elseif(battery < 25) then
-            iconpath = iconpath .. "-low"
-            widget.text:set_markup(markup("#ffff00",battery .. "%"))
-        
+            widget.text:set_markup(markup("#ff6600","  " .. battery .. "%"))
+            if sta:match("Charging") then
+                widget.text:set_markup(markup("#00ff00", "  " .. "Charging"))
+            end
+        elseif(battery < 50) then
+            widget.text:set_markup(markup("#ffff00","  " .. battery .. "%"))
+            if sta:match("Charging") then
+                widget.text:set_markup(markup("#00ff00", "  " .. "Charging"))
+            end
         elseif(battery < 75) then
-            iconpath = iconpath .. "-good"
-            widget.text:set_markup(markup("#66ff00",battery .. "%"))
+            widget.text:set_markup(markup("#66ff00","  " .. battery .. "%"))
+            if sta:match("Charging") then
+                widget.text:set_markup(markup("#00ff00", "  " .. "Charging"))
+            end
         else
-            iconpath = iconpath .. "-full"
-            widget.text:set_markup(markup("#00ff00",battery .. "%"))
+            widget.text:set_markup(markup("#00ff00","  " .. battery .. "%"))
+            if sta:match("Charging") then
+                widget.text:set_markup(markup("#00ff00", "  " .. "Charging"))
+            end
         end
 
-        if sta:match("Charging") then
-            iconpath = iconpath .. "-charging" 
-            widget.text:set_markup(markup("#00ff00", "Charging"))
-
-        elseif sta:match("Discharging") then
-        
-        end
-        
-        iconpath = iconpath .. "-symbolic.svg"
-        
-        widget.icon:set_image(iconpath)
-        if battery >= 100 then 
-            battery = 100 
-            widget.text:set_markup(markup("#00ff00", "full"))
+        if(battery >= 100) then
+            widget.text:set_markup(markup("#00ff00", "  " .. "full"))
         end
 
     else

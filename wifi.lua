@@ -20,16 +20,6 @@ end
 
 -- {{{ Define subwidgets
 widget.text = wibox.widget.textbox()
-widget.icon = wibox.widget.imagebox()
-
--- Change the draw method so icons can be drawn smaller
-helpers:set_draw_method(widget.icon)
--- }}}
-
--- {{{ Define interactive behaviour
-widget.icon:buttons(awful.util.table.join(
-    awful.button({ }, 1, function () awful.util.spawn("gnome-control-center network") end)
-))
 -- }}}
 
 -- {{{ Update method
@@ -51,33 +41,23 @@ function widget:update()
         text = text .. " (" .. connected .. ")"
     end
 
-    local iconpath = "/usr/share/icons/Faenza/status/scalable/network-wireless-signal"
     
     if quality <= 0 then
-        iconpath = iconpath .. "-none"
-        widget.text:set_markup(markup("#ffffff","N/A"))
+        widget.text:set_markup(markup("#ffffff","  " .. "N/A"))
     
     elseif quality < 25 then
-        iconpath = iconpath .. "-weak"
-        widget.text:set_markup(markup("#ff0000",text))
+        widget.text:set_markup(markup("#ff0000","  " .. text))
 
     elseif quality < 50 then
-        iconpath = iconpath .. "-ok"
-        widget.text:set_markup(markup("#ffff00",text))
+        widget.text:set_markup(markup("#ffff00","  " .. text))
     
     elseif quality < 75 then
-        iconpath = iconpath .. "-good"
-        widget.text:set_markup(markup("#66ff00",text))
+        widget.text:set_markup(markup("#66ff00","  " .. text))
     
     else
-        iconpath = iconpath .. "-excellent"
-        widget.text:set_markup(markup("#00ff00",text))
+        widget.text:set_markup(markup("#00ff00","  " .. text))
     
     end
-
-    iconpath = iconpath .. "-symbolic.svg"
-
-    widget.icon:set_image(iconpath)
 
     f:close()
 end
