@@ -5,5 +5,6 @@
 Change directory to ` ~/.config/awesome ` then 
 ` git clone https://github.com/soildfaker/awesomerc.git `
 And ` vi ./light.sh ` eidt ` yourpassword ` to adjust brightess.
+Submodule "lain" may not downloaded when you finished above command, run ` git submodule update --init --recursive `
 ###About the "icon"
 Those icons in the above picture are provided by a [special font](https://github.com/FortAwesome/Font-Awesome/), please download and install it.
