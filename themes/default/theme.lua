@@ -15,8 +15,8 @@ white = "#ffffff"
 
 theme = {}
 
-themes_dir = "~/.config/awesome/themes/"
-theme.wallpaper = themes_dir .. "/default/wallpapers/background.jpg"
+themes_dir = "~/.config/awesome/themes"
+theme.wallpaper = themes_dir .. "/default/wallpapers/background.png"
 theme.icon_theme = nil
 theme.tasklist_disable_icon = true
 theme.font                                  = "sans 8"
