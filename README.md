@@ -9,7 +9,7 @@ git clone https://github.com/soildfaker/awesomerc.git awesome
 cd awesome
 ```
 
-And ` vi ./light.sh ` replace ` yourpassword `. This shell script intend to adjust brightness.
+And ` vi ./light.sh ` replace ` yourpassword `. This shell script used to adjust the brightness.
 
 Submodule "lain" may not downloaded when you finished above commands
 
