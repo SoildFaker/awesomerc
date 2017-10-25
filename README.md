@@ -1,8 +1,9 @@
-##Screenshot
+
+#Screenshot
 
 ![screenshot](http://ww1.sinaimg.cn/large/005Nt2Qyjw1f23cfgm7mij311y0lcdw3.jpg)
 
-##How to install
+#How to install
 
 Change directory to ` ~/.config ` then 
 
@@ -18,6 +19,6 @@ Submodule "lain" may not downloaded when you finished above commands
 
 Run ` git submodule update --init --recursive ` to download it.
 
-###About the "icon"
+#About the "icon"
 
 Those icons in the status bar above picture are provided by a [special font](https://github.com/FortAwesome/Font-Awesome/), please download and install it.
